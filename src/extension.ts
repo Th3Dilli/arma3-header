@@ -1,4 +1,4 @@
-'use strict';
+
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
@@ -9,7 +9,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     // Use the console to output diagnostic information (console.log) and errors (console.error)
     // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "arma3-header" is now active!');
+    console.log('Congratulations, your extension arma3-header" is now active!');
 
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with  registerCommand
@@ -17,40 +17,23 @@ export function activate(context: vscode.ExtensionContext) {
     
     let disposable = vscode.commands.registerCommand('extension.a3InsertHeader', () => {
         
-
         let insert = "";
-        let header = [
-            "",
-            "   Left Behind Mod",
-            "   by Th3Dilli",
-            "   <<authoremail>>",
-            "   https://discord.gg/YUbUqAV",
-            "",
-            "   Copyright <<projectCreationYear>> - <<year>> <<name>>",
-            "",
-            "       <<filename>>",
-            "",
-            "   This work is licensed under the <<licensename>>.",
-            "   To view a copy of this license, visit <<licenseurl>>.",
-            ""
-        ];
-        let alwaysOnTop = true;
-        let prefix = "<<";
-        let postfix = ">>";
-        let startChar = "/*";
-        let midChar = " *";
-        let endChar = " */";
-        let variables = 
-        [
-            ["authoremail","dilli.1822@gmx.at"],
-            ["author","Th3Dilli"],
-            ["name","Left Behind Mod"],
-            ["projectCreationYear","2018"],
-            ["year","2018"],
-            ["licensename","APL-ND"],
-            ["licenseurl","http://www.license.com"]
-        ];
 
+        const config = vscode.workspace.getConfiguration('arma3-header');
+
+        let header = config.get("header",["",""]);
+        let alwaysOnTop = config.get("alwaysOnTop",true);
+        let prefix = config.get("prefix","");
+        let postfix = config.get("postfix","");
+        let startChar = config.get("startChar","");
+        let midChar = config.get("midChar","");
+        let endChar = config.get("endChar","");
+        let functionTag = config.get("functionTag","");
+        let variables = config.get("variables",[["",""]]);
+        let newHeader = [];
+        for (const iterator of header) {
+            newHeader.push(iterator);
+        }
 
         let editor = vscode.window.activeTextEditor;
         if (!editor) {
@@ -59,7 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
         }
         else
         {
-            let ext =getCurFileext();
+            let ext = getCurFileext();
             let name = getCurFilename();
             
             if(name === null || ext === null)
@@ -73,9 +56,8 @@ export function activate(context: vscode.ExtensionContext) {
                 if(ext === "sqf")
                 {
                     let nameSplit = name.split("_");
-                    name = "LBCore_fnc_" + nameSplit[1];
+                    name = functionTag + nameSplit[1];
                 }
-                variables.push(["filename",name]);
 
                 insert += startChar + "\n";
                 for (let index = 0; index < header.length; index++)
@@ -86,12 +68,20 @@ export function activate(context: vscode.ExtensionContext) {
                         let result = header[index].match(regEx);
                         if (result !== null)
                         {
-                            header[index] = header[index].replace(regEx, variables[i][1]);
+                            if(variables[i][0] === "filename")
+                            {
+                                newHeader[index] = header[index].replace(regEx, name);
+                            }
+                            else
+                            {
+                                newHeader[index] = header[index].replace(regEx, variables[i][1]);
+                            }
                         }
                     }
-                    insert += midChar + header[index] + "\n";
+                    insert += midChar + newHeader[index] + "\n";
                 }
                 insert += endChar + "\n";
+                
                 
                 if(alwaysOnTop)
                 {
@@ -124,9 +114,6 @@ export function getCurFilename()
         let regEx = new RegExp(/([^\\]+(?=\.))/,"igm");
         let filepath = editor.document.fileName;
         let result = filepath.match(regEx);
-        console.log("getCurFilename");
-        console.log(filepath);
-        console.log(result);
         if(result === null || result[0] === "")
         {
             vscode.window.showErrorMessage('editor.document.fileName was not found!! :' + editor.document.fileName);
@@ -153,9 +140,6 @@ export function getCurFileext()
         let regEx = new RegExp(/(\w+$)/,"igm");
         let filepath = editor.document.fileName;
         let result = filepath.match(regEx);
-        console.log("getCurFileext");
-        console.log(filepath);
-        console.log(result);
         if(result === null || result[0] === "")
         {
             vscode.window.showErrorMessage('editor.document.fileName was not found!! :' + editor.document.fileName);

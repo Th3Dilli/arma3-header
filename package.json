@@ -17,9 +17,92 @@
         "commands": [
             {
                 "command": "extension.a3InsertHeader",
-                "title": "Arma3 insert header"
+                "title": "Arma3 insert header",
+                "category": "Arma 3"
             }
-        ]
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "Arma 3 Header",
+            "description": "Arma 3 Header settings",
+            "properties": {
+                "arma3-header.alwaysOnTop": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Adds the header alwayes on top of the file else where the coursor is."
+                },
+                "arma3-header.prefix": {
+                    "type": "string",
+                    "default": "<<",
+                    "description": "Variable prefix"
+                },
+                "arma3-header.postfix": {
+                    "type": "string",
+                    "default": ">>",
+                    "description": "Variable postfix"
+                },
+                "arma3-header.startChar": {
+                    "type": "string",
+                    "default": "/*",
+                    "description": "Comment start character"
+                },
+                "arma3-header.midChar": {
+                    "type": "string",
+                    "default": " *",
+                    "description": "Comment middl character"
+                },
+                "arma3-header.endChar": {
+                    "type": "string",
+                    "default": " */",
+                    "description": "Comment end character"
+                },
+                "arma3-header.functionTag": {
+                    "type": "string",
+                    "default": "LBCore_fnc_",
+                    "description": "Function pre tag"
+                },
+                "arma3-header.variables": {
+                    "type": "array",
+                    "default": [
+                        ["filename",""],
+                        ["authoremail","Max.Mustermann@mail.com"],
+                        ["author","Max Mustermann"],
+                        ["name","Addon/Project name"],
+                        ["projectCreationYear","2018"],
+                        ["year","2018"],
+                        ["licensename","Arma Public License No Derivatives (APL-ND)"],
+                        ["licenseurl","https://www.bohemia.net/community/licenses/arma-public-license-nd"]
+                    ],
+                    "items": {
+                        "type": "array",
+                        "minItems": 2,
+                        "maxItems": 2
+                    },
+                    "description": "Variable Array"
+                },
+                "arma3-header.header": {
+                    "type": "array",
+                    "default": [
+                        "",
+                        "   <<name>>",
+                        "   by <<author>>",
+                        "   <<authoremail>>",
+                        "",
+                        "   Copyright <<projectCreationYear>> - <<year>> <<name>>",
+                        "",
+                        "       <<filename>>",
+                        "",
+                        "   This work is licensed under the <<licensename>>.",
+                        "   To view a copy of this license, visit <<licenseurl>>.",
+                        ""
+                    ],
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Header layout"
+                }
+            }
+        }
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
