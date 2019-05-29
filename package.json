@@ -64,14 +64,38 @@
                 "arma3-header.variables": {
                     "type": "array",
                     "default": [
-                        ["filename",""],
-                        ["authoremail","Max.Mustermann@mail.com"],
-                        ["author","Max Mustermann"],
-                        ["name","Addon/Project name"],
-                        ["projectCreationYear","2018"],
-                        ["year","2018"],
-                        ["licensename","Arma Public License No Derivatives (APL-ND)"],
-                        ["licenseurl","https://www.bohemia.net/community/licenses/arma-public-license-nd"]
+                        [
+                            "filename",
+                            ""
+                        ],
+                        [
+                            "authoremail",
+                            "Max.Mustermann@mail.com"
+                        ],
+                        [
+                            "author",
+                            "Max Mustermann"
+                        ],
+                        [
+                            "name",
+                            "Addon/Project name"
+                        ],
+                        [
+                            "projectCreationYear",
+                            "2018"
+                        ],
+                        [
+                            "year",
+                            "2018"
+                        ],
+                        [
+                            "licensename",
+                            "Arma Public License No Derivatives (APL-ND)"
+                        ],
+                        [
+                            "licenseurl",
+                            "https://www.bohemia.net/community/licenses/arma-public-license-nd"
+                        ]
                     ],
                     "items": {
                         "type": "array",
@@ -112,10 +136,10 @@
         "test": "npm run compile && node ./node_modules/vscode/bin/test"
     },
     "devDependencies": {
-        "typescript": "^3.1.4",
-        "vscode": "^1.1.25",
-        "tslint": "^5.8.0",
-        "@types/node": "^8.10.25",
-        "@types/mocha": "^2.2.42"
+        "@types/mocha": "^2.2.42",
+        "@types/node": "^8.10.48",
+        "tslint": "^5.16.0",
+        "typescript": "^3.5.1",
+        "vscode": "^1.1.34"
     }
 }
